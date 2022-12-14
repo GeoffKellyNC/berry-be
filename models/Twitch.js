@@ -117,14 +117,14 @@ class Twitch {
         }
       }
 
-      // static async verifyTwitchAccessToken (){
-      //   try {
+      static async verifyTwitchAccessToken (){
+        try {
 
           
-      //   } catch (error) {
-      //     console.log('Twitch Model verifyTwitchAccessToken Error: ', error)
-      //   }
-      // }
+        } catch (error) {
+          console.log('Twitch Model verifyTwitchAccessToken Error: ', error)
+        }
+      }
 
 
 }
