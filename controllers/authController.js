@@ -86,12 +86,37 @@ exports.login = async (req, res) => {
         console.log('authController.login() Error: ', error)
     }
 
+}
 
-    
+exports.verifyUserAccess = async (req, res) => {
+    try {
+        const { 
+            access_token, 
+            userName, 
+            unx_id, 
+            token, 
+            twitchId
+        } = req.body.data
+
+        const isTwitchAccessVerified = await Twitch.verifyTwitchAccessToken(access_token, userName, twitchId)
+
+        const isJWTVerified = await Auth.verifyUserJWT(token, unx_id)
+
+        console.log('Twitch Verified: ', isTwitchAccessVerified) //!REMOVE
+        console.log('JWT VERIFIED: ', isJWTVerified) //!REMOVE
+
+        if (!isTwitchAccessVerified || !isJWTVerified){
+            res.status(401).json({message: 'Access Error'})
+            return
+        }
+
+        res.status(200).json({isTwitchAccessVerified})
+
+        
 
 
 
-
-
-
+    } catch (error) {
+        console.log('authController Verify User Access Error: ', error)
+    }
 }
