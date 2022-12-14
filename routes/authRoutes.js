@@ -8,6 +8,10 @@ router
     .post(authController.login);
 
 router
+    .route("/logout")
+    .post(authController.logout);
+
+router
     .route("/verifyAccess")
     .post(authController.verifyUserAccess);
 
