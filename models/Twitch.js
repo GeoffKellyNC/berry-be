@@ -117,14 +117,27 @@ class Twitch {
         }
       }
 
-      // static async verifyTwitchAccessToken (){
-      //   try {
+      static async verifyTwitchAccessToken (access_token, userName, twitchId){
+        try {
+          const headers = {
+            'Authorization': `OAuth ${access_token}`,
+          }
+          const verifiedData = await axios.get('https://id.twitch.tv/oauth2/validate', { headers })
 
+
+          if (verifiedData.data.user_id === twitchId && userName === verifiedData.data.login){
+              return {
+                  verified: true,
+                  data: verifiedData.data
+              }
+          }
+
+          return false
           
-      //   } catch (error) {
-      //     console.log('Twitch Model verifyTwitchAccessToken Error: ', error)
-      //   }
-      // }
+        } catch (error) {
+          console.log('Twitch Model verifyTwitchAccessToken Error: ', error)
+        }
+      }
 
 
 }

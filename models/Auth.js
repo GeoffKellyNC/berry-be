@@ -19,6 +19,39 @@ class Auth {
         return token
     }
 
+    static async verifyUserJWT (userJWT, unx_id) {
+        try {
+            const sql = `SELECT session_token FROM app_users WHERE unx_id = '${unx_id}'`;
+
+            const res =  await db.execute(sql);
+
+            const sessionToken = res[0][0].session_token
+
+            console.log('verify JWT Session Token: ', sessionToken) //!REMOVE
+
+            const tokenMatch = (userJWT === sessionToken)
+
+            const jwtValid = await jwt.verify(userJWT, process.env.JWT_SECRET, (err, decoded) => {
+                if (err) {
+                    return false;
+                } else {
+                    return true;
+                }
+            });
+
+            if (!tokenMatch || !jwtValid) {
+                return false;
+            }
+
+            return true
+
+
+
+        } catch (error) {
+            console.log('Auth Model verifyUserJWT Error: ', error)
+        }
+    }
+
 }
 
 
