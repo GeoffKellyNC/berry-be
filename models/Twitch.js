@@ -97,7 +97,7 @@ class Twitch {
             return true
           }
 
-          return db.execute(`UPDATE config_twitch SET client_id = ${data.client_id}, client_secret = ${client_secret},`)
+          return db.execute(`UPDATE config_twitch SET client_id = '${data.client_id}', client_secret = '${data.client_secret}' WHERE unx_id = '${data.unx_id}'`)
 
         } catch (error) {
           console.log('Twitch Model setConfig() error: ', error)

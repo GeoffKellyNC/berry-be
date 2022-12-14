@@ -2,6 +2,8 @@ require('dotenv').config()
 const Auth = require('../models/Auth')
 const Twitch = require('../models/Twitch')
 const User = require('../models/User')
+const BerryBot = require('../models/BerryBot')
+const {stringify, parse} = require('flatted');
 
 const DEBUG = process.env.DEBUG_MODE;
 
@@ -45,7 +47,6 @@ exports.login = async (req, res) => {
 
         const userUxId = await User.getUserUxId(login);
 
-        console.log('authController userUxId: ', userUxId); //!REMOVE
 
         const userAuthObj = {
             client_id: process.env.TWITCH_CLIENT_ID,
@@ -59,9 +60,11 @@ exports.login = async (req, res) => {
         await Twitch.setConfig(userAuthObj)
         const jwtToken = await Auth.createJWT(userUxId)
 
-        console.log('authController jwtToken: ', jwtToken) //!REMOVE
 
         await Twitch.setBotTarget(login, userUxId)
+
+        const newBotClient = await BerryBot.connect(display_name)
+
 
         res.status(200).json({
             jwtToken,
@@ -73,11 +76,9 @@ exports.login = async (req, res) => {
                 twitch_email: email,
                 twitch_image: profile_image_url
             },
-            access_token
+            access_token,
+            newBotClient: stringify(newBotClient)
         })
-
-        // Debugging Console logs 
-        DEBUG && (console.log('authController login userExists ', userExists))
 
         return
 
@@ -86,6 +87,17 @@ exports.login = async (req, res) => {
         console.log('authController.login() Error: ', error)
     }
 
+}
+
+exports.logout = async (req, res) => {
+    try {
+        const { target, chatClient } = req.body.data
+
+        res.status(200).json({message: 'Logged Out'})
+        
+    } catch (error) {
+        console.log('authController.logout() Error: ', error)
+    }
 }
 
 exports.verifyUserAccess = async (req, res) => {
@@ -101,9 +113,6 @@ exports.verifyUserAccess = async (req, res) => {
         const isTwitchAccessVerified = await Twitch.verifyTwitchAccessToken(access_token, userName, twitchId)
 
         const isJWTVerified = await Auth.verifyUserJWT(token, unx_id)
-
-        console.log('Twitch Verified: ', isTwitchAccessVerified) //!REMOVE
-        console.log('JWT VERIFIED: ', isJWTVerified) //!REMOVE
 
         if (!isTwitchAccessVerified || !isJWTVerified){
             res.status(401).json({message: 'Access Error'})
