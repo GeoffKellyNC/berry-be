@@ -43,8 +43,9 @@ class User {
 
     async saveUserToDb() {
         try {
-          const sql = `INSERT INTO app_users (unx_id, user_name, user_email, user_pass, twitch_user, twitch_id, profile_img) VALUES (?)`;
-          const values = [
+
+          return db.execute('INSERT INTO app_users (unx_id, user_name, user_email, user_pass, twitch_user, twitch_id, profile_img) VALUES (?,?,?,?,?,?,?)', 
+          [
             this.unx_id,
             this.name,
             this.email,
@@ -52,17 +53,20 @@ class User {
             this.twitchName,
             this.twitchId,
             this.avatarURL,
-          ];
-          const idData = db.execute(sql, [values]);
-          return [0][0].unx_id
+          ]);
+
         } catch (error) {
           console.log("User.saveUserToDb error: ", error);
           
         }
     }
 
-    static getUserUxId (userName){
+    static async getUserUxId (userName){
+        const sql = `SELECT unx_id FROM app_users WHERE twitch_user = ?`;
+        const value = [userName];
+        const idSQL = await db.execute(sql, value);
 
+        return idSQL[0][0].unx_id;
     }
 }
 

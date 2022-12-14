@@ -56,17 +56,22 @@ class Twitch {
     }
 
     static async updateConfig(data, unx_id) {
-        const sql = `UPDATE config_twitch SET client_id = ?, client_secret = ?, refreshToken =?, accessToken = ?, obtainment_timestamp = ? WHERE unx_id = '${unx_id}'`;
-        await db.execute(sql, [
-          data.client_id,
-          data.client_secret,
-          data.refreshToken,
-          data.accessToken,
-          data.obtainment_timestamp,
-        ]);
-        const configSql = `SELECT * FROM config_twitch WHERE unx_id = '${this.unx_id}'`;
-        const newConfig = await db.execute(configSql);
-        return newConfig[0][0];
+        try {
+            const sql = `UPDATE config_twitch SET client_id = ?, client_secret = ?, refreshToken =?, accessToken = ?, obtainment_timestamp = ? WHERE unx_id = '${unx_id}'`;
+            await db.execute(sql, [
+              data.client_id,
+              data.client_secret,
+              data.refreshToken,
+              data.accessToken,
+              data.obtainment_timestamp,
+            ]);
+            const configSql = `SELECT * FROM config_twitch WHERE unx_id = '${this.unx_id}'`;
+            const newConfig = await db.execute(configSql);
+            return newConfig[0][0];
+
+        } catch (error) {
+          console.log('Twitch Model updateConfig() error: ', error)
+        }
       }
 
       static async getBotConfig() {
@@ -74,6 +79,53 @@ class Twitch {
         const data = await db.execute(sql);
         return data[0][0];
       }
+
+      static async setConfig(data){
+        try {
+          console.log('Twitch Model setConfig Data: ', data) //!REMOVE
+          const config = await db.execute('SELECT * FROM config_twitch WHERE unx_id = ?', [data.unx_id])
+          if (config[0].length === 0) {
+            console.log('Twitch Model setConfig() config[0].length === 0') //!REMOVE
+            await db.execute('INSERT INTO config_twitch (unx_id, accessToken, client_id, expires_in, refreshToken, client_secret) VALUES (?,?,?,?,?,?)', [
+              data.unx_id,
+              data.access_token,
+              data.client_id,
+              data.expires_in,
+              data.refresh_token,
+              data.client_secret
+            ])
+            return true
+          }
+
+          return db.execute(`UPDATE config_twitch SET client_id = ${data.client_id}, client_secret = ${client_secret},`)
+
+        } catch (error) {
+          console.log('Twitch Model setConfig() error: ', error)
+        }
+      }
+
+
+      static async setBotTarget (target, unx_id) {
+        try {
+
+          const sql = `INSERT INTO channel_targets (unx_id, target_channel) VALUES ('${this.unx_id}', '${this.target}')`;
+
+          await db.execute(sql);
+
+        } catch (error) {
+          console.log('Twitch Model setConfig() error: ' + target, error)
+        }
+      }
+
+      // static async verifyTwitchAccessToken (){
+      //   try {
+
+          
+      //   } catch (error) {
+      //     console.log('Twitch Model verifyTwitchAccessToken Error: ', error)
+      //   }
+      // }
+
 
 }
 
