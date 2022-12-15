@@ -1,5 +1,5 @@
 const express = require("express");
-const twitchController = require('../controllers/authController')
+const twitchController = require('../controllers/twitchController')
 
 const router = express.Router()
 
@@ -7,5 +7,8 @@ const router = express.Router()
 
 router
     .route('/runAd')
-    .post(twitchController.runTwitchAd)
+    .post(twitchController.runTwitchAd);
+
+
+module.exports = router;
 

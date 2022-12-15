@@ -55,13 +55,13 @@ class Twitch {
           }
     }
 
-    static getUserConfigData = (unx_id) => {
+    static async getUserConfigData (unx_id) {
       try {
 
         const sql = `SELECT * FROM config_twitch WHERE unx_id = '${this.unx_id}'`;
         const data = await db.execute(sql);
         return data[0][0];
-        
+
       } catch (error) {
         console.log('Twitch Model getUserConfigData Error: ', error)
       }
@@ -173,6 +173,7 @@ class Twitch {
         } catch (error) {
           console.log('Twitch Model runTwitchAd Error: ', error)
         }
+  }
 }
 
 module.exports = Twitch;

@@ -25,10 +25,6 @@ exports.runTwitchAd = async (req,res) => {
           res.status(200).json({ message: adRes.response.data });
 
 
-
-
-
-
     } catch (error) {
         console.log('twitchController runTwitchAd Error: ', error)
     }
