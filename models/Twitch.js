@@ -55,6 +55,18 @@ class Twitch {
           }
     }
 
+    static getUserConfigData = (unx_id) => {
+      try {
+
+        const sql = `SELECT * FROM config_twitch WHERE unx_id = '${this.unx_id}'`;
+        const data = await db.execute(sql);
+        return data[0][0];
+        
+      } catch (error) {
+        console.log('Twitch Model getUserConfigData Error: ', error)
+      }
+    }
+
     static async updateConfig(data, unx_id) {
         try {
             const sql = `UPDATE config_twitch SET client_id = ?, client_secret = ?, refreshToken =?, accessToken = ?, obtainment_timestamp = ? WHERE unx_id = '${unx_id}'`;
@@ -139,7 +151,28 @@ class Twitch {
         }
       }
 
+      static async runTwitchAd ( access_token, twitch_id, duration, client_id ) {
+        try {
+            const headers = {
+              Authorization: `Bearer ${access_token}`,
+              "Client-ID": client_id,
+              "Content-Type": "application/json",
+            };
+            const body = {
+              broadcaster_id: twitch_id,
+              length: duration,
+            };
 
+            const res = await axios.post(
+              "https://api.twitch.tv/helix/channels/commercial",
+              body,
+              { headers }
+            );
+            return res.data;
+
+        } catch (error) {
+          console.log('Twitch Model runTwitchAd Error: ', error)
+        }
 }
 
 module.exports = Twitch;
