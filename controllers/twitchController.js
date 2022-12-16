@@ -33,3 +33,38 @@ exports.runTwitchAd = async (req,res) => {
         console.log('twitchController runTwitchAd Error: ', error)
     }
 }
+
+exports.getTwitchChatSettings = async (req, res) => {
+    try {
+        const userData = req.body.data
+
+
+
+        const userJwt  = req.headers.authorization
+
+        const verified = await Auth.verifyUserJWT(userJwt, userData.unx_id)
+
+        if(!verified){
+            res.status(401).json({ message: 'Not Authorized'})
+            return
+        }
+
+        const { client_id, accessToken } = await Twitch.getUserConfigData(userData.unx_id)
+
+        const chatSettings = await Twitch.getTwitchChatSettings(userData.twitch_id, accessToken, client_id)
+
+        console.log('Chat Settings: ', chatSettings) //!REMOVE
+
+        if(chatSettings.data[0].length < 1){
+            res.status(500).json({ message: 'Error getting chat settings'})
+            return
+        }
+
+        res.status(200).json(chatSettings.data[0])
+         
+
+
+    } catch (error) {
+        console.log('twitchController getChatSettings Error: ', error)
+    }
+}

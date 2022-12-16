@@ -179,6 +179,27 @@ class Twitch {
           return error.response.data
         }
   }
+
+  static async getTwitchChatSettings(twitch_id, access_token, client_id) {
+    try {
+      const modId = 794561481;
+      const broadcaster_id = twitch_id;
+
+      const headers = {
+        Authorization: `Bearer ${access_token}`,
+        "Client-ID": client_id,
+      };
+      const res = await axios.get(
+        `https://api.twitch.tv/helix/chat/settings?broadcaster_id=${broadcaster_id}&moderator_id=${modId}`,
+        { headers }
+      );
+
+      return res.data;
+
+    } catch (error) {
+      console.log(error);
+    }
+  }
 }
 
 module.exports = Twitch;

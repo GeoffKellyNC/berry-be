@@ -9,6 +9,10 @@ router
     .route('/runAd')
     .post(twitchController.runTwitchAd);
 
+router
+    .route('/twitchChatSettings')
+    .post(twitchController.getTwitchChatSettings)
+
 
 module.exports = router;
 
