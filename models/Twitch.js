@@ -57,8 +57,7 @@ class Twitch {
 
     static async getUserConfigData (unx_id) {
       try {
-
-        const sql = `SELECT * FROM config_twitch WHERE unx_id = '${this.unx_id}'`;
+        const sql = `SELECT * FROM config_twitch WHERE unx_id = '${unx_id}'`;
         const data = await db.execute(sql);
         return data[0][0];
 
@@ -94,10 +93,8 @@ class Twitch {
 
       static async setConfig(data){
         try {
-          console.log('Twitch Model setConfig Data: ', data) //!REMOVE
           const config = await db.execute('SELECT * FROM config_twitch WHERE unx_id = ?', [data.unx_id])
           if (config[0].length === 0) {
-            console.log('Twitch Model setConfig() config[0].length === 0') //!REMOVE
             await db.execute('INSERT INTO config_twitch (unx_id, accessToken, client_id, expires_in, refreshToken, client_secret) VALUES (?,?,?,?,?,?)', [
               data.unx_id,
               data.access_token,
@@ -109,7 +106,8 @@ class Twitch {
             return true
           }
 
-          return db.execute(`UPDATE config_twitch SET client_id = '${data.client_id}', client_secret = '${data.client_secret}' WHERE unx_id = '${data.unx_id}'`)
+
+          return db.execute(`UPDATE config_twitch SET client_id = '${data.client_id}', client_secret = '${data.client_secret}', accessToken = '${data.access_token}', refreshToken = '${data.refresh_token}' WHERE unx_id = '${data.unx_id}'`)
 
         } catch (error) {
           console.log('Twitch Model setConfig() error: ', error)
@@ -168,10 +166,17 @@ class Twitch {
               body,
               { headers }
             );
+
+            if(res.status === 400){
+              console.log('Its 400!')
+              console.log('Twitch Model runTwitchAd res.status === 400: ', res.data)
+            }
+
             return res.data;
 
         } catch (error) {
-          console.log('Twitch Model runTwitchAd Error: ', error)
+          console.log('Twitch Model runTwitchAd Error: ', error.response.data)
+          return error.response.data
         }
   }
 }

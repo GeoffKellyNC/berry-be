@@ -14,7 +14,6 @@ class Auth {
         const token = jwt.sign({unx_id}, process.env.JWT_SECRET, {expiresIn: '24h'});
         await db.execute(`UPDATE app_users SET session_token = '${token}' WHERE unx_id = '${unx_id}'`)
 
-        console.log('Auth Model Token Set......') //!REMOVE
 
         return token
     }
@@ -26,8 +25,6 @@ class Auth {
             const res =  await db.execute(sql);
 
             const sessionToken = res[0][0].session_token
-
-            console.log('verify JWT Session Token: ', sessionToken) //!REMOVE
 
             const tokenMatch = (userJWT === sessionToken)
 

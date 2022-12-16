@@ -17,10 +17,12 @@ exports.login = async (req, res) => {
     try {
         const { code } = req.body.data;
 
+
         const { 
                 access_token, 
                 expires_in, 
                 refresh_token } = await Twitch.getAccessToken(code)
+
 
         const { 
                 id, 
@@ -56,6 +58,7 @@ exports.login = async (req, res) => {
             expires_in,
             access_token,
         };
+
 
         await Twitch.setConfig(userAuthObj)
         const jwtToken = await Auth.createJWT(userUxId)

@@ -10,7 +10,6 @@ class BerryBot {
     }
 
     static async connect(target){
-        console.log('Connecting Target: ', target) //!REMOVE
         const date = new Date()
         const client = await returnBerryClient()
         await client.join(target)
@@ -25,8 +24,6 @@ class BerryBot {
         })
     }
     static async disconnect(client, target) {
-        console.log('Disconnecting Target: ', target) //!REMOVE
-        console.log('Disconnecting Client: ', client) //!REMOVE
         await client.part(target)
         const date = new Date()
         console.log(`Berry Bot Disconnected from ${target} chat at ${date}`)
