@@ -1,12 +1,39 @@
 require('dotenv').config()
 const  { returnBerryClient } = require('../twitch/berry')
 const axios  = require('axios')
+const { RefreshingAuthProvider } = require('@twurple/auth')
+const { ChatClient } = require('@twurple/chat');
+const Twitch = require('./Twitch')
+
+
 
 class BerryBot {
     constructor(obj){
         this.target = obj.target;
         this.unx_id = obj.unx_id;
-        this.configData = obj.configData;
+        this.botConfigData = obj.botConfigData;
+        this.authProvider = new RefreshingAuthProvider({
+            clientId: obj.botConfigData.client_id,
+            clientSecret: obj.botConfigData.clientSecret,
+            onRefresh: async (newTokenData) => {
+                const oldData = await Twitch.getBotConfig()
+                const newData = {
+                    ...oldData,
+                    ...newTokenData
+                }
+                await Twitch.updateConfig(newData, 'bot')
+            },
+            obj.botConfigData
+            
+        }),
+        this.chatClient = new ChatClient(this.authProvider)
+    }
+
+    async run () {
+        const date = new Date()
+        await this.chatClient.connect()
+        console.log(`Berry PUB Dev connected at ${date.toLocaleString()}`)
+        return
     }
 
     static async connect(target){
