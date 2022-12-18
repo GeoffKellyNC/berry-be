@@ -15,5 +15,9 @@ router
     .route("/verifyAccess")
     .post(authController.verifyUserAccess);
 
+router
+    .route("/ping")
+    .get(authController.pingServer)
+
 
 module.exports = router;

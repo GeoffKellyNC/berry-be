@@ -53,7 +53,6 @@ exports.getTwitchChatSettings = async (req, res) => {
 
         const chatSettings = await Twitch.getTwitchChatSettings(userData.twitch_id, accessToken, client_id)
 
-        console.log('Chat Settings: ', chatSettings) //!REMOVE
 
         if(chatSettings.data[0].length < 1){
             res.status(500).json({ message: 'Error getting chat settings'})

@@ -17,11 +17,6 @@ class Twitch {
             const REDIRECT_URI_LOCAL = process.env.TWITCH_REDIRECT_URI_LOCAL;
             const data = await axios.post(`https://id.twitch.tv/oauth2/token?client_id=${CLIENT_ID}&client_secret=${CLIENT_SECRET}&code=${code}&grant_type=authorization_code&redirect_uri=${ REDIRECT_URI_LOCAL }`);
             const { access_token, expires_in, refresh_token, scope,  } = data.data;
-
-            //DEBUGGING CONSOLE logs
-            // DEBUG && (
-            //     console.log('Twitch Model getAccessToken Data: ', data.data)
-            // )
             
             return {access_token, expires_in, refresh_token, scope}
         }catch(err){

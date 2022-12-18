@@ -12,6 +12,12 @@ app.use( express.json() )
 
 app.use("/auth", require("./routes/authRoutes"));
 app.use("/twitch", require("./routes/twitchRoutes"))
+app.use("/music", require("./routes/musicRoutes"))
+
+app.get('/', (req, res) => {
+    res.send('<h1>Server is up and running</h1>')
+})
+
 
 
 

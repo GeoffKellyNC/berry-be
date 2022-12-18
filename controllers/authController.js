@@ -13,6 +13,14 @@ const DEBUG = process.env.DEBUG_MODE;
  * @description: Controller when logging in
  */
 
+exports.pingServer = async (req, res) => {
+    try {
+        res.status(200).json({data: 'pong'})        
+    } catch (error) {
+        res.status(500).json({ message: 'Error With Server. Check Logs!'})
+    }
+}
+
 exports.login = async (req, res) => {
     try {
         const { code } = req.body.data;
