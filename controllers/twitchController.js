@@ -67,3 +67,36 @@ exports.getTwitchChatSettings = async (req, res) => {
         console.log('twitchController getChatSettings Error: ', error)
     }
 }
+
+exports.getAutoModSettings = async (req, res) => {
+    try{
+        const { userData } = req.body
+
+        const userJwt  = req.headers.authorization
+
+       const verified = await Auth.verifyUserJWT(userJwt, userData.unx_id)
+
+       if(!verified){
+        res.status(401).json({ message: 'Not Authorized'})
+        return
+       }
+
+       const { client_id, accessToken } = await Twitch.getUserConfigData(userData.unx_id)
+
+       const autoModSettings = await Twitch.getAutoModSettings(userData, client_id, accessToken)
+
+
+       console.log("🚀 ~ file: twitchController.js:87 ~ exports.getAutoModSettings= ~ autoModSettings", autoModSettings)//!REMOVE
+
+       res.status(200).json(autoModSettings)
+       
+       return
+
+    } catch (error) {
+        res.status(200).json(error)
+        console.log("🚀 ~ file: twitchController.js:75 ~ exports.getAutoModSettings= ~ error", error)
+        return
+        
+    }
+
+}

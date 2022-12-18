@@ -198,6 +198,18 @@ class Twitch {
       console.log(error);
     }
   }
+
+  static async getAutoModSettings(userObj, client_id, access_token) {
+      const headers = {
+        Authorization: `Bearer ${access_token}`,
+        "Client-ID": client_id,
+      };
+      const apiRes = await axios.get(
+        `https://api.twitch.tv/helix/moderation/automod/settings?broadcaster_id=${userObj.twitch_id}&moderator_id=${userObj.twitch_id}`,
+        { headers }
+      );
+      return apiRes.data.data[0];
+  }
 }
 
 module.exports = Twitch;
