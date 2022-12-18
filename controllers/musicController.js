@@ -17,13 +17,11 @@ exports.getAllMusic = async (req, res) => {
 
         const result = await Music.getAllSongs()
 
-        console.log('Get Songs Res: ', result[0]) //!REMOVE
 
         res.status(200).json({ data: result[0] })
 
     } catch (error) {
         res.status(500).json({ message: error })
-        console.log('music Controller getAllSongs Error: ', error) //!REMOVE
     }
 
 }

@@ -129,19 +129,22 @@ class Twitch {
           }
           const verifiedData = await axios.get('https://id.twitch.tv/oauth2/validate', { headers })
 
+   
 
-          if (verifiedData.data.user_id === twitchId && userName === verifiedData.data.login){
+          if (verifiedData.data.user_id === twitchId && userName.toLowerCase() === verifiedData.data.login){
               return {
                   verified: true,
                   data: verifiedData.data
               }
           }
 
+
           return false
           
         } catch (error) {
           console.log('Twitch Model verifyTwitchAccessToken Error: ', error)
         }
+
       }
 
       static async runTwitchAd ( access_token, twitch_id, duration, client_id ) {

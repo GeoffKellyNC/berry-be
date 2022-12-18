@@ -121,9 +121,13 @@ exports.verifyUserAccess = async (req, res) => {
             twitchId
         } = req.body.data
 
+        
         const isTwitchAccessVerified = await Twitch.verifyTwitchAccessToken(access_token, userName, twitchId)
 
+
+
         const isJWTVerified = await Auth.verifyUserJWT(token, unx_id)
+
 
         if (!isTwitchAccessVerified || !isJWTVerified){
             res.status(401).json({message: 'Access Error'})
@@ -131,6 +135,7 @@ exports.verifyUserAccess = async (req, res) => {
         }
 
         res.status(200).json({isTwitchAccessVerified})
+        return
 
         
 
