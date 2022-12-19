@@ -208,7 +208,7 @@ class Twitch {
         `https://api.twitch.tv/helix/moderation/automod/settings?broadcaster_id=${userObj.twitch_id}&moderator_id=${userObj.twitch_id}`,
         { headers }
       );
-      return apiRes.data.data[0];
+      return apiRes.data.data[0]; 
   }
 }
 
