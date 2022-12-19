@@ -13,6 +13,9 @@ router
     .route('/twitchChatSettings')
     .post(twitchController.getTwitchChatSettings)
 
+router 
+    .route('/autoModSettings')
+    .post(twitchController.getAutoModSettings)
 
 module.exports = router;
 
