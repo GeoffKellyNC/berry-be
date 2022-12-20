@@ -24,12 +24,22 @@ exports.pingServer = async (req, res) => {
 exports.login = async (req, res) => {
     try {
         const { code } = req.body.data;
+        
+        console.log("🚀 ~ file: authController.js:27 ~ exports.login= ~ code", code) //!REMOVE
+
+        
 
 
         const { 
                 access_token, 
                 expires_in, 
                 refresh_token } = await Twitch.getAccessToken(code)
+                
+                console.log("🚀 ~ file: authController.js:37 ~ exports.login= ~ refresh_token", refresh_token)
+                
+                console.log("🚀 ~ file: authController.js:37 ~ exports.login= ~ access_token", access_token)
+
+                console.log("🚀 ~ file: authController.js:36 ~ exports.login= ~ expires_in", expires_in)
 
 
         const { 
@@ -38,6 +48,11 @@ exports.login = async (req, res) => {
                 display_name,
                 email, 
                 profile_image_url } = await Twitch.getUserData(access_token)
+
+                console.log('display_name', display_name) //!REMOVE
+                console.log('email', email) //!REMOVE
+                console.log('profile_image_url', profile_image_url) //!REMOVE
+                console.log('id', id) //!REMOVE
 
 
         const user = new User(

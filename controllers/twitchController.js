@@ -100,3 +100,12 @@ exports.getAutoModSettings = async (req, res) => {
     }
 
 }
+
+exports.getChatMods = async (req, res) => {
+    try {
+        
+    } catch (error) {
+        console.log("🚀 ~ file: twitchController.js:108 ~ exports.getChatMods= ~ error", error)
+        
+    }
+}
