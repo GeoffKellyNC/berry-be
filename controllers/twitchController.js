@@ -123,6 +123,6 @@ exports.getChatMods = async (req, res) => {
         
     } catch (error) {
         console.log("🚀 ~ file: twitchController.js:108 ~ exports.getChatMods= ~ error", error)
-        
+         
     }
 }
