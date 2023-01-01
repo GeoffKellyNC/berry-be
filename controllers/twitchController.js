@@ -85,9 +85,6 @@ exports.getAutoModSettings = async (req, res) => {
 
        const autoModSettings = await Twitch.getAutoModSettings(userData, client_id, accessToken)
 
-
-       console.log("🚀 ~ file: twitchController.js:87 ~ exports.getAutoModSettings= ~ autoModSettings", autoModSettings)//!REMOVE
-
        res.status(200).json(autoModSettings)
        
        return
@@ -99,4 +96,33 @@ exports.getAutoModSettings = async (req, res) => {
         
     }
 
+}
+
+exports.getChatMods = async (req, res) => {
+    try {
+
+        const user_jwt = req.headers.authorization
+        const unx_id = req.headers.unx_id
+        const userData  = req.body.data
+
+        const verified = await Auth.verifyUserJWT(user_jwt, unx_id)
+
+        if(!verified){
+            res.status(401).json({ message: 'Not Authorized'})
+            return
+           }
+
+           const { client_id, accessToken } = await Twitch.getUserConfigData(unx_id)
+
+           const chatMods = await Twitch.getChatMods(client_id, accessToken, userData)
+           
+        //    console.log("🚀 ~ file: twitchController.js:117 ~ exports.getChatMods= ~ chatMods", chatMods) //!REMOVE
+        
+
+
+        
+    } catch (error) {
+        console.log("🚀 ~ file: twitchController.js:108 ~ exports.getChatMods= ~ error", error)
+         
+    }
 }

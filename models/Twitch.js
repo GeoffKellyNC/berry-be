@@ -210,6 +210,28 @@ class Twitch {
       );
       return apiRes.data.data[0]; 
   }
+
+  static async getChatMods(client_id, accessToken, userData){
+    try {
+
+      const twitchId = userData.twitch_id.toString()
+
+      const headers = {
+        Authorization: `Bearer ${accessToken}`,
+        "Client-ID": client_id
+      }
+
+      const getChatModsRes = await axios.get(`https://api.twitch.tv/helix/moderation/moderators?broadcaster_id=${twitchId}?first=1000`,
+      { headers })
+
+      console.log("🚀 ~ file: Twitch.js:224 ~ Twitch ~ getChatMods ~ getChatModsRes", getChatModsRes) //!REMOVE
+      
+    } catch (error) {
+      
+      console.log("🚀 ~ file: Twitch.js:218 ~ Twitch ~ getChatMods ~ error", error)
+      
+    }
+  }
 }
 
 module.exports = Twitch;

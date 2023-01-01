@@ -6,6 +6,11 @@ const router = express.Router()
 
 
 router
+    .route('/getChatMods')
+    .post(twitchController.getChatMods)
+
+
+router
     .route('/runAd')
     .post(twitchController.runTwitchAd);
 
@@ -16,6 +21,8 @@ router
 router 
     .route('/autoModSettings')
     .post(twitchController.getAutoModSettings)
+
+
 
 module.exports = router;
 
