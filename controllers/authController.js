@@ -24,21 +24,22 @@ exports.pingServer = async (req, res) => {
 exports.login = async (req, res) => {
     try {
         const { code } = req.body.data;
+        
+
+        
 
 
         const { 
                 access_token, 
                 expires_in, 
                 refresh_token } = await Twitch.getAccessToken(code)
-
-
+                
         const { 
                 id, 
                 login, 
                 display_name,
                 email, 
                 profile_image_url } = await Twitch.getUserData(access_token)
-
 
         const user = new User(
                 login,
