@@ -57,11 +57,6 @@ const runGPTModel = async (question) => {
 
 const processMessage = async (chatClient, channel, user, message) => {
 
-    if(message === "!ping"){
-        chatClient.say(channel, `@${user} Pong!`)
-        return
-    }
-
     if(message === "!berry"){
         chatClient.say(channel, ` Hello! @${user})`)
         return
