@@ -23,8 +23,10 @@ class Auth {
             const sql = `SELECT session_token FROM app_users WHERE unx_id = '${unx_id}'`;
 
             const res =  await db.execute(sql);
-
+            // console.log("🚀 ~ file: Auth.js:28 ~ Auth ~ verifyUserJWT ~ sessionToken", res[0][0]) //!REMOVE
+            
             const sessionToken = res[0][0].session_token
+
 
             const tokenMatch = (userJWT === sessionToken)
 

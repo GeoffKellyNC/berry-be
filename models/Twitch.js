@@ -232,6 +232,27 @@ class Twitch {
       
     }
   }
+
+  static async getCurrentStreamData(client_id, accessToken, userData){
+    try {
+      const headers = {
+        'Authorization': `Bearer ${accessToken}`,
+        'Client-Id': `${client_id}`
+    }
+
+      const res = await axios.get(`https://api.twitch.tv/helix/streams?user_id=${userData.twitch_id}`, { headers: headers})
+
+      const streamData = res.data.data
+
+      return streamData
+
+      
+
+    }catch(error){
+      console.log("🚀 ~ file: Twitch.js:240 ~ Twitch ~ getCurrentStreamData ~ error", error)
+      
+    }
+  }
 }
 
 module.exports = Twitch;

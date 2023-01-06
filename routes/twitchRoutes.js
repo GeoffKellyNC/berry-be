@@ -22,6 +22,10 @@ router
     .route('/autoModSettings')
     .post(twitchController.getAutoModSettings)
 
+router
+    .route('/currentStreamData')
+    .post(twitchController.getCurrentStreamData)
+
 
 
 module.exports = router;

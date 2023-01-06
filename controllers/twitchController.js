@@ -126,3 +126,30 @@ exports.getChatMods = async (req, res) => {
          
     }
 }
+
+exports.getCurrentStreamData = async (req,res) => {
+    try {
+        const user_jwt = req.headers.authorization
+        const unx_id = req.headers.unx_id
+        const userData  = req.body.data
+
+        const verified = await Auth.verifyUserJWT(user_jwt, unx_id)
+
+        if(!verified){
+            res.status(401).json({ message: 'Not Authorized'})
+            return
+           }
+
+           const { client_id, accessToken } = await Twitch.getUserConfigData(unx_id)
+
+           const streamData = await Twitch.getCurrentStreamData(client_id, accessToken, userData) 
+
+
+           res.status(200).json(streamData) 
+
+
+    } catch (error) {
+        console.log("🚀 ~ file: twitchController.js:134 ~ exports.getCurrentStreamData= ~ error", error)
+        
+    }
+}
