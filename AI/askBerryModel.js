@@ -3,6 +3,10 @@ const { Configuration, OpenAIApi } = require("openai");
 
 
 const runAskBerryModel = async (question) => {
+
+  try{
+
+    console.log("Berry Has been Asked: ", question) //!REMOVE
     const configuration = new Configuration({
         apiKey: process.env.OPENAI_API_KEY,
       });
@@ -17,7 +21,15 @@ const runAskBerryModel = async (question) => {
         presence_penalty: 0.0, 
       });
 
+      console.log('Berry Responded!') //!REMOVE
+
+
       return response.data.choices[0].text
+
+    }catch(error){
+      console.log("🚀 ~ file: askBerryModel.js:25 ~ runAskBerryModel ~ error", error)
+      
+    }
 
 }
 

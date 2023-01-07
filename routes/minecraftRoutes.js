@@ -7,5 +7,9 @@ router
     .route("/test")
     .get(minecraftControllers.test)
 
+router
+    .route("/test")
+    .post(minecraftControllers.testPost)
+
 
 module.exports = router;
