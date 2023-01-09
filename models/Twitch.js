@@ -240,7 +240,7 @@ class Twitch {
         'Client-Id': `${client_id}`
     }
 
-      const res = await axios.get(`https://api.twitch.tv/helix/streams?user_login=${userData.twitch_id}`, { headers: headers})
+      const res = await axios.get(`https://api.twitch.tv/helix/streams?user_id=${userData.twitch_id}`, { headers: headers})
 
       const streamData = res.data.data
 

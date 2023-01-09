@@ -22,16 +22,30 @@ exports.testPost = async (req, res) => {
         const kHeaders = req[kHeadersSymbol];
         const kHeadersMessage = req[kHeadersSymbol]['message'];
 
-        console.log(kHeadersMessage)
+        console.log('Message: ', kHeadersMessage) //!REMOVE
+        console.log('user_id: ', kHeaders['user-id']) //!REMOVE
+
+        const user = kHeaders['user-id']
+
 
         console.log('Asking Question....')
         const answer = await runAskBerryModel(kHeadersMessage)
 
-        console.log('ANSWERED!', answer)
 
-        res.status(200).json({ message: answer})
+        const newAnswer = answer.includes('Marv: ') ? answer.replace('Marv: ', '') : answer
+
+        // console.log('Answer: ', newAnswer)
+        // res.status(200).json(newAnswer)
+        
+        
+        const removedNewLines = newAnswer.replace('/n', '')
+        console.log('NEW ANSWER', removedNewLines)
+        res.status(200).json(removedNewLines)
+        
+        // res.status(200) //!REMOVE
 
         console.log('SENT!')
+        
 
 
     } catch (error) {
